@@ -2,6 +2,7 @@ const axios = require('axios').create({ baseURL: 'https://leetcode-cn.com' })
 const argv = require('yargs').argv
 const write = require('write')
 const path = require('path')
+const fs = require('fs')
 
 const LANG_MAP = {
   javascript: '.js',
@@ -83,8 +84,8 @@ const getAllSubmitssions = ({ cookie, ua }) => {
 
 
 (async () => {
-  const { cookie, ua } = argv
-  if (!cookie || !ua) {
+  const { cookie, ua, output } = argv
+  if (!cookie || !ua || !output) {
     console.error('params error', argv)
     return process.exit(1)
   }
@@ -98,9 +99,12 @@ const getAllSubmitssions = ({ cookie, ua }) => {
 
   ssionsGroupByTitle.forEach(taskGroup => {
     taskGroup.forEach((cur, idx) => {
-      const writePath = path.join(__dirname, 'output',cur.title, cur.lang, idx + LANG_MAP[cur.lang.toLowerCase()])
+      const writePath = path.join(__dirname, output, cur.title, cur.lang, idx + LANG_MAP[cur.lang.toLowerCase()])
       console.log(`Write ${cur.title} ${cur.lang} ssion ${cur.id} to: ${writePath}`)
       write(writePath, cur.code)
     })
+
+    // Copy reademe file
+    fs.copyFileSync(path.join(__dirname, 'README.md'), path.join(__dirname, output))
   })
 })()
