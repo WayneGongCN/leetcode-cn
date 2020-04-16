@@ -96,6 +96,10 @@ const getAllSubmitssions = ({ cookie, ua }) => {
   let ssionsGroupByTitle = allSubmitssions.map(x => x.title)
   ssionsGroupByTitle = [...new Set(ssionsGroupByTitle)]
   ssionsGroupByTitle = ssionsGroupByTitle.map(title => allSubmitssions.filter(x => x.title === title))
+  
+  // Copy reademe file
+  fs.mkdirSync(path.join(__dirname, output))
+  fs.copyFileSync(path.join(__dirname, 'README.md'), path.join(__dirname, output, 'README.md'))
 
   ssionsGroupByTitle.forEach(taskGroup => {
     taskGroup.forEach((cur, idx) => {
@@ -103,8 +107,5 @@ const getAllSubmitssions = ({ cookie, ua }) => {
       console.log(`Write ${cur.title} ${cur.lang} ssion ${cur.id} to: ${writePath}`)
       write(writePath, cur.code)
     })
-
-    // Copy reademe file
-    fs.copyFileSync(path.join(__dirname, 'README.md'), path.join(__dirname, output))
   })
 })()
