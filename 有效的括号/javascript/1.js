@@ -8,7 +8,7 @@ var isValid = function(s) {
         '{': '}',
         '[': ']'
     }
-    s = s.replace(/[ ]/g, '').split('')
+    s = s.replace(/ /g, '').split('')
 
     let stack = []
     for (let i = 0, len = s.length; i < len; i++) {

@@ -9,17 +9,14 @@ var isValid = function(s) {
         '[': ']'
     }
     s = s.replace(/[ ]/g, '').split('')
-
-    let stack = []
+    let temp = []
     for (let i = 0, len = s.length; i < len; i++) {
         const item = s[i]
-        const last = stack.length && stack[stack.length - 1]
-
-        if (map[last] !== item) {
-            stack.push(item)
+        if (temp.length && map[temp[temp.length - 1]] === item) {
+            temp.pop()
         } else {
-            stack.pop()
+            temp.push(item)
         }
     }
-    return stack.length === 0
+    return temp.length === 0
 };

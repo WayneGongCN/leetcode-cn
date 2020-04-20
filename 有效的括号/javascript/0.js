@@ -3,23 +3,24 @@
  * @return {boolean}
  */
 var isValid = function(s) {
-    const map = {
+    s = s.split('').filter(Boolean)
+
+    const stack = []
+    const len = s.length
+    const keyMap = {
         '(': ')',
-        '{': '}',
-        '[': ']'
+        '[': ']',
+        '{': '}'
     }
-    s = s.replace(/ /g, '').split('')
 
-    let stack = []
-    for (let i = 0, len = s.length; i < len; i++) {
+    for (let i = 0; i < len; i++) {
         const item = s[i]
-        const last = stack.length && stack[stack.length - 1]
-
-        if (map[last] !== item) {
-            stack.push(item)
-        } else {
+        if (stack.length && keyMap[stack[stack.length - 1]] === item) {
             stack.pop()
+        } else {
+            stack.push(item)
         }
     }
+
     return stack.length === 0
 };
